@@ -46,33 +46,43 @@ export default class MyScene extends Component {
       }
     }
   }
+  _handlepressSignup(){
+    this.props.navigator.push({
+      id:3
+    })
+  }
   render() {
     return (
 
           <View style={styles.container}>
               <Image style={styles.background}
-              source={require('./src/2.png')}
+              source={require('./2.png')}
                   />
                   <View style={styles.input}>
                       <TextInput style={styles.username}
                       underlineColorAndroid='#ff8b8b'
                       placeholderTextColor='#ff8b8b'
                       onChangeText={(username) => this.setState({username})}
-                      placeholder="fuckyou"
+                      placeholder="username"
                       />
                       <TextInput style={styles.password}
                       underlineColorAndroid='#ff8b8b'
                       placeholderTextColor='#ff8b8b'
                       secureTextEntry={true}
                       onChangeText={(password) => this.setState({password})}
-                      placeholder="hello"
+                      placeholder="password"
                       />
                   </View>
                   <TouchableHighlight style={styles.loginbutton}
                   onPress={this._handlepress.bind(this)}
-                  underlayColor="red">
+                  underlayColor="white">
                   <Text >
-                  Send
+                  Sign in
+                  </Text>
+                  </TouchableHighlight>
+                  <TouchableHighlight style={styles.signup} onPress={this._handlepressSignup.bind(this)}>
+                  <Text>
+                  Sign up
                   </Text>
                   </TouchableHighlight>
           </View>
@@ -109,7 +119,12 @@ const styles= StyleSheet.create({
   loginbutton:{
     width: window.width*0.8,
     height: window.height*0.1,
-    backgroundColor:'red',
+    backgroundColor:'#e88565',
+    justifyContent:'center',
+    alignItems:'center',
+  },
+  signup:{
+    marginTop:window.height*0.1,
   }
 
 })

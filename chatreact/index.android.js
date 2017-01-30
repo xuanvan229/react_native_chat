@@ -12,9 +12,18 @@ import {
   Navigator,
   View
 } from 'react-native';
-import MyScene from './MyScene';
-import LOGIN from './login';
-
+import * as firebase from 'firebase';
+import MyScene from './src/MyScene';
+import LOGIN from './src/login';
+import Signup from './src/signup';
+var config = {
+    apiKey: "AIzaSyABeJLAAf3o2HIzbL78A7ooamppx-_D-Ys",
+    authDomain: "chat-react-native.firebaseapp.com",
+    databaseURL: "https://chat-react-native.firebaseio.com",
+    storageBucket: "chat-react-native.appspot.com",
+    messagingSenderId: "898656107377"
+  };
+  firebase.initializeApp(config);
 export default class chatreact extends Component {
   constructor(props){
     super(props);
@@ -25,6 +34,9 @@ export default class chatreact extends Component {
    }
    else if(route.id ==2){
      return <LOGIN navigator={navigator} />
+   }
+   else if(route.id ==3){
+     return <Signup navigator={navigator} />
    }
   }
   render() {
