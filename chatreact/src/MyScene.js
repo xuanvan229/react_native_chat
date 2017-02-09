@@ -41,14 +41,17 @@ export default class MyScene extends Component {
       if(this.state.username ==this.state.account[i].username && this.state.password==this.state.account[i].password)
       {
         this.props.navigator.push({
-          id:2
+          id:2,
+          passProps:{
+            username:this.state.username
+          }
         })
       }
     }
   }
   _handlepressSignup(){
     this.props.navigator.push({
-      id:3
+      id:3,
     })
   }
   render() {

@@ -33,7 +33,7 @@ export default class chatreact extends Component {
      return <MyScene navigator={navigator} />
    }
    else if(route.id ==2){
-     return <LOGIN navigator={navigator} />
+     return <LOGIN navigator={navigator} {...route.passProps}/>
    }
    else if(route.id ==3){
      return <Signup navigator={navigator} />
