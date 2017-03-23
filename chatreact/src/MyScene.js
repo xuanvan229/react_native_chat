@@ -41,7 +41,7 @@ export default class MyScene extends Component {
       if(this.state.username ==this.state.account[i].username && this.state.password==this.state.account[i].password)
       {
         this.props.navigator.push({
-          id:2,
+          id:4,
           passProps:{
             username:this.state.username
           }
@@ -57,20 +57,21 @@ export default class MyScene extends Component {
   render() {
     return (
 
-          <View style={styles.container}>
+
               <Image style={styles.background}
-              source={require('./2.png')}
-                  />
+              source={require('./back.jpg')}
+                  >
+                    <Text style={styles.welcome}>Welcome</Text>
                   <View style={styles.input}>
                       <TextInput style={styles.username}
-                      underlineColorAndroid='#ff8b8b'
-                      placeholderTextColor='#ff8b8b'
+                      placeholderTextColor='#fff'
+                      underlineColorAndroid='rgba(0,0,0,0)'
                       onChangeText={(username) => this.setState({username})}
                       placeholder="username"
                       />
                       <TextInput style={styles.password}
-                      underlineColorAndroid='#ff8b8b'
-                      placeholderTextColor='#ff8b8b'
+                      underlineColorAndroid='rgba(0,0,0,0)'
+                      placeholderTextColor='#fff'
                       secureTextEntry={true}
                       onChangeText={(password) => this.setState({password})}
                       placeholder="password"
@@ -79,16 +80,16 @@ export default class MyScene extends Component {
                   <TouchableHighlight style={styles.loginbutton}
                   onPress={this._handlepress.bind(this)}
                   underlayColor="white">
-                  <Text >
-                  Sign in
+                  <Text style={styles.textlogin}>
+                  Login
                   </Text>
                   </TouchableHighlight>
                   <TouchableHighlight style={styles.signup} onPress={this._handlepressSignup.bind(this)}>
-                  <Text>
-                  Sign up
+                  <Text style={styles.textlogin}>
+                  Register
                   </Text>
                   </TouchableHighlight>
-          </View>
+        </Image>
 
 
     )
@@ -98,36 +99,58 @@ export default class MyScene extends Component {
 const styles= StyleSheet.create({
   container:{
     flex:1,
+
+  },
+  welcome:{
+    color:"#fff",
+    fontSize:40,
+    fontFamily:'sans-serif-light',
+    top:-window.height*0.1,
+  },
+  background:{
+    flex:1,
+    resizeMode: 'cover',
+    width:window.width*1,
+    height:window.height*1,
     justifyContent:'center',
     alignItems:'center',
     backgroundColor:'#fff'
-  },
-  background:{
-    width:window.width*0.3,
-    height:window.width*0.3,
-    top:-window.height*0.15,
   },
   input:{
     top:-window.height*0.05,
   },
   username:{
     width: window.width*0.8,
+    borderWidth: 1,
+    borderColor:"#fff",
+    color:"#fff",
+    borderRadius:50,
+    textAlign: 'center',
     height: window.height*0.1,
   },
   password:{
     width: window.width*0.8,
+    borderWidth: 1,
+    borderColor:"#fff",
+    borderRadius:50,
+    color:"#fff",
+    textAlign: 'center',
     height: window.height*0.1,
-    marginTop: window.height*0.01,
+    marginTop: window.height*0.04,
   },
   loginbutton:{
     width: window.width*0.8,
     height: window.height*0.1,
-    backgroundColor:'#e88565',
+    backgroundColor:'#33ff99',
+    borderRadius:50,
     justifyContent:'center',
     alignItems:'center',
   },
+  textlogin:{
+    color:'#fff',
+  },
   signup:{
-    marginTop:window.height*0.1,
+    marginTop:window.height*0.04,
   }
 
 })

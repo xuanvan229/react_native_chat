@@ -41,6 +41,7 @@ export default class LOGIN extends Component {
   this.refs['textInput1'].setNativeProps({text: ''});
   }
   render() {
+    console.log(">>>>",this.props);
     const MESSAGE=this.state.messages.map((message,i)=>{
       return(
         <View key={i} style={styles.chat}>

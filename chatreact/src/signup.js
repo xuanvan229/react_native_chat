@@ -26,9 +26,13 @@ export default class Signup extends Component{
       name:'',
       pass1:'',
       pass2:'',
+      avatarsrc:'',
       allaccount:[
 
-      ]
+      ],
+      listimg:[
+
+      ],
     }
 
 
@@ -36,30 +40,46 @@ export default class Signup extends Component{
   componentWillMount(){
       firebase.database().ref('username/').on('value',(snapshot)=>{
       const account=snapshot.val();
+      console.log(account);
       if(account != null){
         this.setState({
           allaccount:account
         })
       }
+    });
+    firebase.database().ref('images/').on('value',(snap)=>{
+      const listavatar=snap.val();
+      console.log(listavatar);
+      if(listavatar != null){
+        this.setState({
+          listimg:listavatar
+        })
+      }
     })
   }
   _handlepress(){
-    var x= Math.floor((Math.random() * 10) + 1);
+    var x= Math.floor((Math.random() * 9) + 1);
+    console.log(x);
     var i;
     var check=true;
     for(i=0; i<this.state.allaccount.length; i++){
         if(this.state.name == this.state.allaccount[i].username && this.state.pass1==this.state.pass2)
           check=false;
     }
+    var j;
+    var url
+    for(j=0;j<this.state.listimg.length;j++){
+        if(x==this.state.listimg[j].id){
+          url=this.state.listimg[j].url
+        }
+    }
     if(check==true){
       const nextMessage={
       id: this.state.allaccount.length,
       password:this.state.pass1,
-      imgsrc:x,
+      imgsrc:url,
       username:this.state.name
     }
-    console.log(nextMessage.id);
-    console.log(this.state.allaccount);
     firebase.database().ref('username/'+nextMessage.id).set(nextMessage);
     this.props.navigator.pop();
     }
@@ -69,26 +89,26 @@ export default class Signup extends Component{
   }
   render(){
     return(
-      <View style={styles.container}>
           <Image style={styles.background}
-          source={require('./2.png')} />
+          source={require('./back.jpg')} >
+
             <View style={styles.input}>
               <TextInput style={styles.username}
-              underlineColorAndroid='#ff8b8b'
-              placeholderTextColor='#ff8b8b'
+              underlineColorAndroid='rgba(0,0,0,0)'
+              placeholderTextColor='#fff'
               onChangeText={(name) => this.setState({name})}
               placeholder="username"
               />
               <TextInput style={styles.password}
-              underlineColorAndroid='#ff8b8b'
-              placeholderTextColor='#ff8b8b'
+              underlineColorAndroid='rgba(0,0,0,0)'
+              placeholderTextColor='#fff'
               secureTextEntry={true}
               onChangeText={(pass1) => this.setState({pass1})}
               placeholder="password"
               />
               <TextInput style={styles.password}
-              underlineColorAndroid='#ff8b8b'
-              placeholderTextColor='#ff8b8b'
+              underlineColorAndroid='rgba(0,0,0,0)'
+              placeholderTextColor='#fff'
               secureTextEntry={true}
               onChangeText={(pass2) => this.setState({pass2})}
               placeholder="password"
@@ -97,52 +117,67 @@ export default class Signup extends Component{
           <TouchableHighlight style={styles.loginbutton}
           onPress={this._handlepress.bind(this)}
           underlayColor="white">
-          <Text >
+          <Text style={styles.textlogin}>
           Sign up
           </Text>
           </TouchableHighlight>
           <TouchableHighlight style={styles.signup} onPress={this._handlepressSignup.bind(this)}>
-          <Text>
+          <Text style={styles.textlogin}>
           Sign in
           </Text>
           </TouchableHighlight>
-      </View>
+          </Image>
+
     )
   }
 }
 const styles= StyleSheet.create({
   container:{
-    flex:1,
-    justifyContent:'center',
-    alignItems:'center',
     backgroundColor:'#fff'
   },
   background:{
-    width:window.width*0.3,
-    height:window.width*0.3,
-    top:-window.height*0.15,
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center',
+    width:window.width*1,
+    height:window.width*1,
   },
   input:{
     top:-window.height*0.05,
   },
   username:{
     width: window.width*0.8,
+    borderWidth: 1,
+    borderColor:"#fff",
+    borderRadius:50,
+    color:"#fff",
+    textAlign: 'center',
     height: window.height*0.1,
+    marginTop: window.height*0.04,
   },
   password:{
     width: window.width*0.8,
+    borderWidth: 1,
+    borderColor:"#fff",
+    borderRadius:50,
+    color:"#fff",
+    textAlign: 'center',
     height: window.height*0.1,
-    marginTop: window.height*0.01,
+    marginTop: window.height*0.04,
+  },
+  textlogin:{
+    color:'#fff',
   },
   loginbutton:{
     width: window.width*0.8,
     height: window.height*0.1,
-    backgroundColor:'#e88565',
+    backgroundColor:'#33ff99',
+    borderRadius:50,
     justifyContent:'center',
     alignItems:'center',
   },
   signup:{
-    marginTop: window.height*0.01,
+    marginTop: window.height*0.04,
   }
 
 })

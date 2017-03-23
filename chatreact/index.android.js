@@ -16,6 +16,7 @@ import * as firebase from 'firebase';
 import MyScene from './src/MyScene';
 import LOGIN from './src/login';
 import Signup from './src/signup';
+import LISTUSER from './src/UserList';
 var config = {
     apiKey: "AIzaSyABeJLAAf3o2HIzbL78A7ooamppx-_D-Ys",
     authDomain: "chat-react-native.firebaseapp.com",
@@ -38,12 +39,15 @@ export default class chatreact extends Component {
    else if(route.id ==3){
      return <Signup navigator={navigator} />
    }
+   else if(route.id ==4){
+     return <LISTUSER navigator={navigator} {...route.passProps} />
+   }
   }
   render() {
     return (
       <Navigator
         style={{ flex:1 }}
-        initialRoute={{ id: 1 }}
+        initialRoute={{ id: 1}}
         renderScene={ this.renderScene } />
 
     )
