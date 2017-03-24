@@ -22,11 +22,11 @@ export default class LOGIN extends Component {
     }
   }
   componentDidMount(){
-    firebase.database().ref('testmessage/').on('value',(snapshot)=>{
-      const currentmessage =snapshot.val();
-      if(currentmessage != null){
+    firebase.database().ref('allroom/'+this.props.id).on('value',(snapshot)=>{
+      const yourmessage=snapshot.val();
+      if(yourmessage !=null){
         this.setState({
-          messages:currentmessage
+          messages:yourmessage
         })
       }
     })
@@ -35,9 +35,9 @@ export default class LOGIN extends Component {
     const nextms={
     id: this.state.messages.length,
     message:this.state.text,
-    name:this.props.username
+    username:this.props.username
   }
-  firebase.database().ref('testmessage/'+nextms.id).set(nextms);
+  firebase.database().ref('allroom/'+this.props.id+'/'+nextms.id).set(nextms);
   this.refs['textInput1'].setNativeProps({text: ''});
   }
   render() {
@@ -46,7 +46,7 @@ export default class LOGIN extends Component {
       return(
         <View key={i} style={styles.chat}>
         <Text style={styles.chatleft}>
-        {message.name} :
+        {message.username} :
         </Text>
         <Text style={styles.chatright}>
         {message.message}
