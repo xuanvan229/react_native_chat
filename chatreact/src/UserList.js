@@ -25,6 +25,10 @@ export default class LISTUSER extends Component{
       img:[
 
       ],
+      idmessage:[
+
+      ],
+      getid:'',
       url:'http://i.imgur.com/NJgWnCd.jpg',
     }
   }
@@ -38,7 +42,7 @@ export default class LISTUSER extends Component{
         })
       }
     })
-    firebase.database().ref('images/0').on('value',(snapshot)=>{
+    firebase.database().ref('images/').on('value',(snapshot)=>{
       const imglist=snapshot.val();
       if(imglist != null){
         this.setState({
@@ -46,15 +50,50 @@ export default class LISTUSER extends Component{
         })
       }
     })
+    firebase.database().ref('roommessage/').on('value',(snapshot)=>{
+      const messid=snapshot.val();
+      console.log(messid);
+      if(messid!=null){
+        this.setState({
+          idmessage:messid
+        })
+      }
+    })
+
 
 
   }
   _handlepress(targetUser){
+    var i;
+    console.log(this.state.idmessage[0].username1);
+    var check=false;
+    var id;
+      console.log(targetUser);
+      console.log(this.state.idmessage.length);
+      for(i=0;i<this.state.idmessage.length;i++){
+        if((this.props.username == this.state.idmessage[i].username1 || this.props.username == this.state.idmessage[i].username2 )&&(targetUser ==this.state.idmessage[i].username1 || targetUser==this.state.idmessage[i].username2) )
+        {
+          id=i
+            check=true;
+            console.log(check);
+
+        }
+      }
+      if(check==false){
+        const nextroom={
+          id:this.state.idmessage.length,
+          username1:this.props.username,
+          username2:targetUser,
+        }
+        firebase.database().ref('roommessage/'+nextroom.id).set(nextroom);
+        id=nextroom.id
+      }
     this.props.navigator.push({
       id:2,
       passProps:{
         username:this.props.username,
-        targetUser
+        targetUser,
+        id
       }
     })
   }
@@ -64,40 +103,40 @@ export default class LISTUSER extends Component{
   render(){
     const USER=this.state.alluser.map((user,i)=>{
       return(
-        <TouchableHighlight key={i} onPress={this._handlepress.bind(this,user)}>
-        <View style={styles.viewuser}>
-        <Image source={{uri:user.imgsrc}}
-        style={styles.avatar}
-        />
-        <Text style={styles.username}>{user.fullname}</Text>
-        </View>
+        <TouchableHighlight key={i} onPress={this._handlepress.bind(this,user.username)}>
+              <View style={styles.viewuser}>
+                      <Image source={{uri:user.imgsrc}}
+                      style={styles.avatar}
+                      />
+                          <Text style={styles.username}>{user.fullname}</Text>
+              </View>
         </TouchableHighlight>
       )
     })
     return(
       <Image style={styles.background}
       source={require('./back.jpg')} >
-      <ScrollView style={styles.listuser}>
-      {USER}
-      </ScrollView>
+            <ScrollView style={styles.listuser}>
+            {USER}
+            </ScrollView>
       <View style={styles.navbar}>
-      <TouchableHighlight   onPress={this._pressuser.bind(this)} >
-      <View style={styles.home}>
-      <Icon
-        name='home'
-        color='#fff'
-        size={50} />
-      </View>
-      </TouchableHighlight>
-      <TouchableHighlight onPress={this._pressuser.bind(this)}>
-      <View style={styles.home}>
-      <Icon
-        name='people'
-        color='#fff'
-        size={50} />
-      </View>
-      </TouchableHighlight>
-      </View>
+            <TouchableHighlight   onPress={this._pressuser.bind(this)} >
+                  <View style={styles.home}>
+                      <Icon
+                        name='home'
+                        color='#fff'
+                        size={50} />
+                  </View>
+            </TouchableHighlight>
+            <TouchableHighlight onPress={this._pressuser.bind(this)}>
+                  <View style={styles.home}>
+                      <Icon
+                        name='people'
+                        color='#fff'
+                        size={50} />
+                  </View>
+            </TouchableHighlight>
+            </View>
       </Image>
 
     )
