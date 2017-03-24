@@ -178,6 +178,5 @@ const styles= StyleSheet.create({
   },
   username:{
     color:'#fff',
-    fontFamily:'sans-serif-light',
   }
 })

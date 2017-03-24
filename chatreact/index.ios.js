@@ -9,45 +9,49 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
+  Navigator,
   View
 } from 'react-native';
-
+import * as firebase from 'firebase';
+import MyScene from './src/MyScene';
+import LOGIN from './src/login';
+import Signup from './src/signup';
+import LISTUSER from './src/UserList';
+var config = {
+    apiKey: "AIzaSyABeJLAAf3o2HIzbL78A7ooamppx-_D-Ys",
+    authDomain: "chat-react-native.firebaseapp.com",
+    databaseURL: "https://chat-react-native.firebaseio.com",
+    storageBucket: "chat-react-native.appspot.com",
+    messagingSenderId: "898656107377"
+  };
+  firebase.initializeApp(config);
 export default class chatreact extends Component {
+  constructor(props){
+    super(props);
+  }
+  renderScene(route, navigator) {
+   if(route.id == 1) {
+     return <MyScene navigator={navigator} />
+   }
+   else if(route.id ==2){
+     return <LOGIN navigator={navigator} {...route.passProps}/>
+   }
+   else if(route.id ==3){
+     return <Signup navigator={navigator} />
+   }
+   else if(route.id ==4){
+     return <LISTUSER navigator={navigator} {...route.passProps} />
+   }
+  }
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
-    );
+      <Navigator
+        style={{ flex:1 }}
+        initialRoute={{ id: 1}}
+        renderScene={ this.renderScene } />
+
+    )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
 
 AppRegistry.registerComponent('chatreact', () => chatreact);
