@@ -102,10 +102,10 @@ const styles= StyleSheet.create({
 
   },
   welcome:{
-    color:"#fff",
     fontSize:40,
-    fontFamily:'sans-serif-light',
+    color:"#fff",
     top:-window.height*0.1,
+    backgroundColor: 'rgba(0,0,0,0)',
   },
   background:{
     flex:1,
@@ -124,7 +124,7 @@ const styles= StyleSheet.create({
     borderWidth: 1,
     borderColor:"#fff",
     color:"#fff",
-    borderRadius:50,
+    borderRadius:window.height*0.05,
     textAlign: 'center',
     height: window.height*0.1,
   },
@@ -132,7 +132,7 @@ const styles= StyleSheet.create({
     width: window.width*0.8,
     borderWidth: 1,
     borderColor:"#fff",
-    borderRadius:50,
+    borderRadius:window.height*0.05,
     color:"#fff",
     textAlign: 'center',
     height: window.height*0.1,
