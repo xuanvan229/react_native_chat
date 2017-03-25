@@ -98,7 +98,12 @@ export default class LISTUSER extends Component{
     })
   }
   _pressuser(){
-    console.log("hello");
+    this.props.navigator.push({
+      id:5,
+      passProps:{
+        username:this.props.username
+      }
+    })
   }
   render(){
     const USER=this.state.alluser.map((user,i)=>{
