@@ -48,6 +48,17 @@ export default class Profile extends Component {
         }
       })
     }
+    _presshome(){
+      this.props.navigator.push({
+        id:4,
+        passProps:{
+          username:this.props.username
+        }
+      })
+    }
+    _pressuser(){
+
+    }
   render(){
     var i;
     for(i=0;i<this.state.allaccount.length;i++){
@@ -61,23 +72,43 @@ export default class Profile extends Component {
       <Image style={styles.background}
       source={require('./back.jpg')}
           >
-          <View style={styles.header}>
-          <TouchableHighlight onPress={this._onPress.bind(this)}>
-          <View>
-          <Icon
-          name='mode-edit'
-          color='#00aced' />
-          </View>
-          </TouchableHighlight>
-          </View>
-          <View style={styles.centeruser}>
-          <Image source={{uri:acc.imgsrc}}
-          style={styles.avatar}
-          />
-          <Text style={styles.name}>
-          {acc.username}
-          </Text>
-          </View>
+              <View style={styles.topprofile}>
+                  <View style={styles.header}>
+                      <TouchableHighlight onPress={this._onPress.bind(this)}>
+                          <View>
+                          <Icon
+                          name='mode-edit'
+                          color='#00aced' />
+                          </View>
+                      </TouchableHighlight>
+                      </View>
+                        <View style={styles.centeruser}>
+                            <Image source={{uri:acc.imgsrc}}
+                            style={styles.avatar}
+                            />
+                            <Text style={styles.name}>
+                            {acc.fullname}
+                        </Text>
+                        </View>
+              </View>
+          <View style={styles.navbar}>
+                <TouchableHighlight   onPress={this._presshome.bind(this)} >
+                      <View style={styles.home}>
+                          <Icon
+                            name='home'
+                            color='#fff'
+                            size={50} />
+                      </View>
+                </TouchableHighlight>
+                <TouchableHighlight onPress={this._pressuser.bind(this)}>
+                      <View style={styles.home}>
+                          <Icon
+                            name='people'
+                            color='#fff'
+                            size={50} />
+                      </View>
+                </TouchableHighlight>
+                </View>
       </Image>
     )
   }
@@ -91,11 +122,23 @@ const styles= StyleSheet.create({
     alignItems:'center',
     backgroundColor:'#fff'
   },
+  navbar:{
+    flexDirection:'row',
+    height:window.height*0.07,
+  },
+  home:{
+    width:window.width*0.5,
+    backgroundColor:'pink',
+    height:window.height*0.07,
+  },
+  topprofile:{
+    width:window.width*1,
+    height:window.height*0.93,
+  },
   header:{
     width:window.width*1,
     flexDirection:'row',
     justifyContent:'flex-end',
-    marginTop:window.height*0.04,
   },
   name:{
     fontSize:40,

@@ -71,9 +71,9 @@ export default class LISTUSER extends Component{
       console.log(targetUser);
       console.log(this.state.idmessage.length);
       for(i=0;i<this.state.idmessage.length;i++){
-        if((this.props.username == this.state.idmessage[i].username1 || this.props.username == this.state.idmessage[i].username2 )&&(targetUser ==this.state.idmessage[i].username1 || targetUser==this.state.idmessage[i].username2) )
+        if((this.props.username == this.state.idmessage[i].username1 || this.props.username == this.state.idmessage[i].username2 )&&(targetUser ==this.state.idmessage[i].username1 || targetUser==this.state.idmessage[i].username2))
         {
-          id=i
+            id=i
             check=true;
             console.log(check);
 
@@ -158,16 +158,20 @@ const styles= StyleSheet.create({
     height:window.width*1,
   },
   navbar:{
-    flexDirection:'row'
+    flexDirection:'row',
+    height:window.height*0.07,
+
   },
   listuser:{
     flexDirection:'column',
     width:window.width*1,
-    height:window.height*0.9,
+    height:window.height*0.93,
   },
   home:{
     width:window.width*0.5,
     backgroundColor:'pink',
+    height:window.height*0.07,
+
   },
   viewuser:{
     width:window.width*1,

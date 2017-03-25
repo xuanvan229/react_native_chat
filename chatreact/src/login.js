@@ -4,13 +4,15 @@ import { View,
    ScrollView,
    StyleSheet,
    TextInput,
+   Image,
    Dimensions,
    TouchableHighlight,
    Navigator
  } from 'react-native';
 import * as firebase from 'firebase';
+import { Icon } from 'react-native-elements'
 const window= Dimensions.get('window');
-
+var srcimg='';
 export default class LOGIN extends Component {
   constructor(props){
     super(props);
@@ -18,7 +20,11 @@ export default class LOGIN extends Component {
       text:'',
       messages:[
 
-      ]
+      ],
+      allaccount:[
+
+      ],
+
     }
   }
   componentDidMount(){
@@ -30,27 +36,97 @@ export default class LOGIN extends Component {
         })
       }
     })
+    firebase.database().ref('username/').on('value',(snapshot)=>{
+      const currentaccount=snapshot.val();
+      if(currentaccount!=null){
+        this.setState({
+          allaccount:currentaccount
+        })
+      }
+    })
+
   }
   _handlepress(){
     const nextms={
     id: this.state.messages.length,
     message:this.state.text,
-    username:this.props.username
+    username:this.props.username,
+    imgsrc:srcimg
   }
+
   firebase.database().ref('allroom/'+this.props.id+'/'+nextms.id).set(nextms);
   this.refs['textInput1'].setNativeProps({text: ''});
   }
+  checkstyle(username){
+    if(username==this.props.username){
+      return {
+        marginLeft:20,
+        paddingLeft:10,
+        paddingRight:10,
+        borderRadius:window.height*0.02,
+        height:window.height*0.04,
+        paddingTop:5,
+        paddingBottom:5,
+        backgroundColor:'#0084ff',
+      }
+    }
+    else{
+      return{
+        marginLeft:20,
+        paddingLeft:10,
+        paddingRight:10,
+        borderRadius:window.height*0.02,
+        height:window.height*0.04,
+        paddingTop:5,
+        paddingBottom:5,
+        backgroundColor:'#f1f0f0',
+      }
+    }
+  }
+  checkstylechat(username){
+    if(username==this.props.username){
+      return{
+        alignItems:'center',
+        flexDirection:'row-reverse',
+        height:window.height*0.05,
+        marginTop:10,
+      }
+    }
+    else {
+      return{
+        alignItems:'center',
+        flexDirection:'row',
+        height:window.height*0.05,
+        marginTop:10,
+      }
+    }
+  }
+  checktext(username){
+    if (username==this.props.username) {
+      return{
+        color:'white',
+      }
+    }
+  }
   render() {
+    var i;
+    for(i=0;i<this.state.allaccount.length;i++){
+      if(this.props.username==this.state.allaccount[i].username){
+          srcimg=this.state.allaccount[i].imgsrc
+      }
+    }
     console.log(">>>>",this.props);
     const MESSAGE=this.state.messages.map((message,i)=>{
       return(
-        <View key={i} style={styles.chat}>
-        <Text style={styles.chatleft}>
-        {message.username} :
-        </Text>
-        <Text style={styles.chatright}>
+        <View key={i} style={this.checkstylechat(message.username)}>
+        <Image source={{uri:message.imgsrc}}
+        style={styles.avatar}
+        />
+        <View style={this.checkstyle(message.username)}>
+        <Text style={this.checktext(message.username)}>
         {message.message}
         </Text>
+        </View>
         </View>
       )
     })
@@ -69,9 +145,12 @@ export default class LOGIN extends Component {
           <TouchableHighlight style={styles.submit}
           onPress={this._handlepress.bind(this)}
           underlayColor="white">
-          <Text>
-          Send
-          </Text>
+          <View>
+          <Icon
+            name='send'
+            color='#fff'
+            size={25} />
+            </View>
           </TouchableHighlight>
       </View>
 
@@ -95,17 +174,34 @@ const styles=StyleSheet.create({
   },
   bottom:{
     flexDirection:'row',
+    borderWidth:1,
   },
 
   chatright:{
     marginLeft:20,
     paddingLeft:10,
     paddingRight:10,
-    borderRadius:10,
+    borderRadius:window.height*0.02,
+    height:window.height*0.04,
     paddingTop:5,
     paddingBottom:5,
     backgroundColor:'pink',
   },
+  mychat:{
+    marginLeft:20,
+    paddingLeft:10,
+    paddingRight:10,
+    borderRadius:window.height*0.02,
+    height:window.height*0.04,
+    paddingTop:5,
+    paddingBottom:5,
+    backgroundColor:'red',
+  },
+  avatar:{
+     width:window.height*0.04,
+     height:window.height*0.04,
+     borderRadius:window.height*0.02,
+   },
   submit:{
     width:window.width*0.1,
     justifyContent:'center',

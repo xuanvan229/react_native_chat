@@ -11,6 +11,8 @@ import { View,
 
  } from 'react-native';
 import * as firebase from 'firebase';
+import { Icon } from 'react-native-elements'
+
 const window= Dimensions.get('window');
 var acc=[];
 
@@ -23,7 +25,9 @@ export default class EditProfile extends Component{
       ],
       youraccount:[
 
-      ]
+      ],
+      fullname:'',
+      password:'',
     }
   }
   componentDidMount(){
@@ -36,17 +40,42 @@ export default class EditProfile extends Component{
       }
     })
   }
+  _onPress(){
+    const update={
+      id:acc.id,
+      imgsrc:acc.imgsrc,
+      username:acc.username,
+      password:acc.password,
+      fullname:this.state.fullname
+    }
+    firebase.database().ref('username/'+update.id).set(update);
+    this.props.navigator.push({
+      id:5,
+      passProps:{
+        username:this.props.username
+      }
+    })
+  }
   render(){
     var i;
     for(i=0;i<this.state.allaccount.length;i++){
       if(this.props.username==this.state.allaccount[i].username)
         acc=this.state.allaccount[i];
     }
-    console.log(this.props.username);
+    console.log(this.state.fullname);
     return(
       <Image style={styles.background}
       source={require('./back.jpg')}
           >
+                <View style={styles.header}>
+                <TouchableHighlight onPress={this._onPress.bind(this)}>
+                <View>
+                <Icon
+                name='mode-edit'
+                color='#00aced' />
+                </View>
+                </TouchableHighlight>
+                </View>
                 <View style={styles.centeruser}>
                       <Image source={{uri:acc.imgsrc}}
                       style={styles.avatar}
@@ -60,6 +89,14 @@ export default class EditProfile extends Component{
                           <Text>
                           {acc.username}
                           </Text>
+                      </View>
+                      <View style={styles.onechoose}>
+                          <Text>
+                          Fullname:
+                          </Text>
+                          <TextInput placeholder={acc.fullname} style={styles.fullname}
+                          onChangeText={(fullname)=>this.setState({fullname})}>
+                          </TextInput>
                       </View>
                 </View>
           </Image>
@@ -86,6 +123,11 @@ const styles= StyleSheet.create({
     flexDirection:'row',
     justifyContent:'flex-end',
     marginTop:window.height*0.04,
+  },
+  fullname:{
+    width:window.width*0.4,
+    height:window.height*0.08,
+    borderWidth:1,
   },
   name:{
     fontSize:40,
