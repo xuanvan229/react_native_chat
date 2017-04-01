@@ -83,15 +83,15 @@ export default class EditProfile extends Component{
                 </View>
                 <View>
                       <View style={styles.onechoose}>
-                          <Text>
+                          <Text style={styles.username}>
                           Username:
                           </Text>
-                          <Text>
+                          <Text style={styles.username2}>
                           {acc.username}
                           </Text>
                       </View>
-                      <View style={styles.onechoose}>
-                          <Text>
+                      <View style={styles.onechoose1}>
+                          <Text style={styles.username3}>
                           Fullname:
                           </Text>
                           <TextInput placeholder={acc.fullname} style={styles.fullname}
@@ -112,11 +112,32 @@ const styles= StyleSheet.create({
     alignItems:'center',
     backgroundColor:'#fff'
   },
+  username:{
+    color:"#fff",
+    fontSize:25,
+  },
+  username2:{
+    color:"#fff",
+    fontSize:25,
+  },
+  username3:{
+    color:"#fff",
+    fontSize:25,
+
+  },
   onechoose:{
     flexDirection:'row',
     width:window.width*0.6,
     backgroundColor: 'rgba(0,0,0,0)',
+    alignItems:'center',
 
+  },
+  onechoose1:{
+    flexDirection:'row',
+    width:window.width*0.6,
+    backgroundColor: 'rgba(0,0,0,0)',
+    justifyContent:'center',
+    height:window.height*0.08,
   },
   header:{
     width:window.width*1,
@@ -125,9 +146,11 @@ const styles= StyleSheet.create({
     marginTop:window.height*0.04,
   },
   fullname:{
-    width:window.width*0.4,
-    height:window.height*0.08,
+    width:window.width*0.3,
+    height:window.height*0.05,
     borderWidth:1,
+    borderColor: '#fff',
+
   },
   name:{
     fontSize:40,
