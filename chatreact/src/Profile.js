@@ -16,6 +16,7 @@ import { View,
 import * as firebase from 'firebase';
 const window= Dimensions.get('window');
 var acc=[];
+import NavJs from './nav.js'
 
 export default class Profile extends Component {
   constructor(props){
@@ -75,9 +76,9 @@ export default class Profile extends Component {
       if(this.props.username==this.state.allaccount[i].username)
         acc=this.state.allaccount[i];
     }
-    console.log(this.props.username);
-    console.log(this.state.allaccount);
-    console.log(acc);
+    // console.log(this.props.username);
+    // console.log(this.state.allaccount);
+    // console.log(acc);
     return(
       <Image style={styles.background}
       source={require('./back.jpg')}>
@@ -100,24 +101,7 @@ export default class Profile extends Component {
                         </Text>
                         </View>
               </View>
-          <View style={styles.navbar}>
-                <TouchableHighlight   onPress={this._presshome.bind(this)} >
-                      <View style={styles.home}>
-                          <Icon
-                            name='home'
-                            color='#fff'
-                            size={50} />
-                      </View>
-                </TouchableHighlight>
-                <TouchableHighlight onPress={this._pressuser.bind(this)}>
-                      <View style={styles.home}>
-                          <Icon
-                            name='people'
-                            color='#fff'
-                            size={50} />
-                      </View>
-                </TouchableHighlight>
-                </View>
+          <NavJs navigator={this.props.navigator} username={this.props.username} id={5}/>
       </Image>
     )
   }
@@ -129,7 +113,8 @@ const styles= StyleSheet.create({
     width:window.width*1,
     height:window.height*1,
     alignItems:'center',
-    backgroundColor:'#fff'
+    backgroundColor:'#fff',
+    paddingTop:24,
   },
   navbar:{
     flexDirection:'row',
@@ -141,11 +126,15 @@ const styles= StyleSheet.create({
     height:window.height*0.07,
   },
   topprofile:{
-    width:window.width*1,
-    height:window.height*0.93,
+    marginRight:24,
+    marginLeft:24,
+    // width:window.width*1,
+    // height:window.height*0.93,
+    flex:1,
+
   },
   header:{
-    width:window.width*1,
+    width:window.width*0.95,
     flexDirection:'row',
     justifyContent:'flex-end',
   },

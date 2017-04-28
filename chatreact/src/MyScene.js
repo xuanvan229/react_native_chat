@@ -17,8 +17,8 @@ export default class MyScene extends Component {
   constructor(props){
     super(props);
     this.state={
-      username: '',
-      password: '',
+      username: 'William',
+      password: '123123',
       account:[
 
       ]
@@ -65,6 +65,7 @@ export default class MyScene extends Component {
                   <View style={styles.input}>
                       <TextInput style={styles.username}
                       placeholderTextColor='#fff'
+                      defaultValue={this.state.username}
                       underlineColorAndroid='rgba(0,0,0,0)'
                       onChangeText={(username) => this.setState({username})}
                       placeholder="username"
@@ -73,6 +74,7 @@ export default class MyScene extends Component {
                       underlineColorAndroid='rgba(0,0,0,0)'
                       placeholderTextColor='#fff'
                       secureTextEntry={true}
+                      defaultValue={this.state.password}
                       onChangeText={(password) => this.setState({password})}
                       placeholder="password"
                       />

@@ -15,6 +15,7 @@ import * as firebase from 'firebase';
 import { Icon } from 'react-native-elements'
 const window= Dimensions.get('window');
 var srcimg='';
+import NavJs from './nav.js'
 export default class LOGIN extends Component {
   constructor(props){
     super(props);
@@ -146,26 +147,8 @@ export default class LOGIN extends Component {
           srcimg=this.state.allaccount[i].imgsrc
       }
     }
-    // console.log(">>>>",this.props);
-    // const MESSAGE=this.state.messages.map((message,i)=>{
-    //   return(
-    //     <View key={i} style={this.checkstylechat(message.username)}>
-    //     <Image source={{uri:message.imgsrc}}
-    //     style={styles.avatar}
-    //     />
-    //     <View style={this.checkstyle(message.username)}>
-    //     <Text style={this.checktext(message.username)}>
-    //     {message.message}
-    //     </Text>
-    //     </View>
-    //     </View>
-    //   )
-    // })
     return (
       <View style={styles.container}>
-      {/* <ScrollView style={styles.listchat}>
-            {MESSAGE}
-      </ScrollView> */}
       <FlatList
         data={this.state.messages}
         renderItem={this._renderItem}
@@ -179,18 +162,12 @@ export default class LOGIN extends Component {
           onChangeText={(text) => this.setState({text})}
           placeholder="type your message">
           </TextInput>
-          {/* <TouchableHighlight
-          onPress={this._handlepress.bind(this)}
-          underlayColor="white">
-          <View> */}
           <Icon
             name='send'
             color='#ff0000'
             style={styles.submit}
             onPress={this._handlepress.bind(this)}
             size={25} />
-            {/* </View>
-          </TouchableHighlight> */}
       </View>
 
       </View>

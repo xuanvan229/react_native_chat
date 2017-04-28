@@ -14,6 +14,7 @@ import { View,
 import { Icon } from 'react-native-elements'
 
 import * as firebase from 'firebase';
+import NavJs from './nav.js'
 
 const window= Dimensions.get('window');
 
@@ -130,48 +131,18 @@ export default class LISTUSER extends Component{
 
       </View>
     )
-    //
-    // const USER=this.state.alluser.map((user,i)=>{
-    //   return(
-    //     <TouchableHighlight key={i} onPress={this._handlepress.bind(this,user.username)}>
-    //           <View style={styles.viewuser}>
-    //                   <Image source={{uri:user.imgsrc}}
-    //                   style={styles.avatar}
-    //                   />
-    //                       <Text style={styles.username}>{user.fullname}</Text>
-    //           </View>
-    //     </TouchableHighlight>
-    //   )
-    // })
+
     return(
       <Image style={styles.background}
       source={require('./back.jpg')} >
-            {/* <ScrollView style={styles.listuser}>
-            {USER}
-            </ScrollView> */}
             <FlatList
               data={this.state.alluser}
               renderItem={this._renderItem}
               keyExtractor={item=>item.id}
+              style={{flex:1,    marginRight:16,
+                  marginLeft:16,}}
             />
-      <View style={styles.navbar}>
-            <TouchableHighlight   onPress={this._pressuser.bind(this)} >
-                  <View style={styles.home}>
-                      <Icon
-                        name='home'
-                        color='#fff'
-                        size={50} />
-                  </View>
-            </TouchableHighlight>
-            <TouchableHighlight onPress={this._pressuser.bind(this)}>
-                  <View style={styles.home}>
-                      <Icon
-                        name='people'
-                        color='#fff'
-                        size={50} />
-                  </View>
-            </TouchableHighlight>
-            </View>
+          <NavJs navigator={this.props.navigator} username={this.props.username} id={4}/>
       </Image>
 
     )
@@ -183,9 +154,9 @@ const styles= StyleSheet.create({
   },
   background:{
     flex:1,
-    flexDirection:'column',
     width:window.width*1,
     height:window.width*1,
+    paddingTop:24,
   },
   navbar:{
     flexDirection:'row',
