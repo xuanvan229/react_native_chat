@@ -7,7 +7,9 @@ import { View,
    Image,
    Dimensions,
    TouchableHighlight,
-   Navigator
+   Navigator,
+   FlatList,
+   InteractionManager
  } from 'react-native';
 import * as firebase from 'firebase';
 import { Icon } from 'react-native-elements'
@@ -24,10 +26,14 @@ export default class LOGIN extends Component {
       allaccount:[
 
       ],
+      renderPlaceholderOnly:true
 
     }
   }
   componentDidMount(){
+    InteractionManager.runAfterInteractions(() => {
+      this.setState({renderPlaceholderOnly: false});
+    });
     firebase.database().ref('allroom/'+this.props.id).on('value',(snapshot)=>{
       const yourmessage=snapshot.val();
       if(yourmessage !=null){
@@ -55,7 +61,10 @@ export default class LOGIN extends Component {
   }
 
   firebase.database().ref('allroom/'+this.props.id+'/'+nextms.id).set(nextms);
-  this.refs['textInput1'].setNativeProps({text: ''});
+  // this.refs['textInput1'].setNativeProps({text: ''});
+    this.setState({
+      text:''
+    })
   }
   checkstyle(username){
     if(username==this.props.username){
@@ -108,50 +117,80 @@ export default class LOGIN extends Component {
       }
     }
   }
+  _renderItem=({item})=>{
+    return(
+      <View key={item.id} style={this.checkstylechat(item.username)}>
+        <Image source={{uri:item.imgsrc}}
+        style={styles.avatar}
+        />
+        <View style={this.checkstyle(item.username)}>
+          <Text style={this.checktext(item.username)}>
+          {item.message}
+          </Text>
+        </View>
+      </View>
+    )
+
+  }
+
   render() {
+    if(this.state.renderPlaceholderOnly==true) return(
+      <View style={{flex:1,backgroundColor:'white'}}>
+
+      </View>
+    )
+
     var i;
     for(i=0;i<this.state.allaccount.length;i++){
       if(this.props.username==this.state.allaccount[i].username){
           srcimg=this.state.allaccount[i].imgsrc
       }
     }
-    console.log(">>>>",this.props);
-    const MESSAGE=this.state.messages.map((message,i)=>{
-      return(
-        <View key={i} style={this.checkstylechat(message.username)}>
-        <Image source={{uri:message.imgsrc}}
-        style={styles.avatar}
-        />
-        <View style={this.checkstyle(message.username)}>
-        <Text style={this.checktext(message.username)}>
-        {message.message}
-        </Text>
-        </View>
-        </View>
-      )
-    })
+    // console.log(">>>>",this.props);
+    // const MESSAGE=this.state.messages.map((message,i)=>{
+    //   return(
+    //     <View key={i} style={this.checkstylechat(message.username)}>
+    //     <Image source={{uri:message.imgsrc}}
+    //     style={styles.avatar}
+    //     />
+    //     <View style={this.checkstyle(message.username)}>
+    //     <Text style={this.checktext(message.username)}>
+    //     {message.message}
+    //     </Text>
+    //     </View>
+    //     </View>
+    //   )
+    // })
     return (
       <View style={styles.container}>
-      <ScrollView style={styles.listchat}>
+      {/* <ScrollView style={styles.listchat}>
             {MESSAGE}
-      </ScrollView>
+      </ScrollView> */}
+      <FlatList
+        data={this.state.messages}
+        renderItem={this._renderItem}
+        keyExtractor={item=>item.id}
+      />
       <View style={styles.bottom}>
           <TextInput style={styles.username} ref={'textInput1'}
           underlineColorAndroid='#ff8b8b'
           placeholderTextColor='#ff8b8b'
+          defaultValue={this.state.text}
           onChangeText={(text) => this.setState({text})}
           placeholder="type your message">
           </TextInput>
-          <TouchableHighlight style={styles.submit}
+          {/* <TouchableHighlight
           onPress={this._handlepress.bind(this)}
           underlayColor="white">
-          <View>
+          <View> */}
           <Icon
             name='send'
-            color='#fff'
+            color='#ff0000'
+            style={styles.submit}
+            onPress={this._handlepress.bind(this)}
             size={25} />
-            </View>
-          </TouchableHighlight>
+            {/* </View>
+          </TouchableHighlight> */}
       </View>
 
       </View>
@@ -161,7 +200,8 @@ export default class LOGIN extends Component {
 
 const styles=StyleSheet.create({
   container:{
-    flex:1
+    flex:1,
+    backgroundColor:'white'
   },
   listchat:{
     flex:0.92,

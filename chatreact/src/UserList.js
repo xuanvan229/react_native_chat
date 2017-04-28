@@ -7,7 +7,9 @@ import { View,
    Image,
    Dimensions,
    TouchableHighlight,
-   Navigator
+   Navigator,
+   FlatList,
+   InteractionManager
  } from 'react-native';
 import { Icon } from 'react-native-elements'
 
@@ -30,12 +32,17 @@ export default class LISTUSER extends Component{
       ],
       getid:'',
       url:'http://i.imgur.com/NJgWnCd.jpg',
+      renderPlaceholderOnly:true
+
     }
   }
   componentDidMount(){
+    InteractionManager.runAfterInteractions(() => {
+      this.setState({renderPlaceholderOnly: false});
+    });
     firebase.database().ref('username/').on('value',(snapshot)=>{
       const userlist=snapshot.val();
-      console.log(userlist);
+      // console.log(userlist);
       if(userlist != null){
         this.setState({
           alluser:userlist
@@ -52,7 +59,7 @@ export default class LISTUSER extends Component{
     })
     firebase.database().ref('roommessage/').on('value',(snapshot)=>{
       const messid=snapshot.val();
-      console.log(messid);
+      // console.log(messid);
       if(messid!=null){
         this.setState({
           idmessage:messid
@@ -65,17 +72,17 @@ export default class LISTUSER extends Component{
   }
   _handlepress(targetUser){
     var i;
-    console.log(this.state.idmessage[0].username1);
+    // console.log(this.state.idmessage[0].username1);
     var check=false;
     var id;
-      console.log(targetUser);
-      console.log(this.state.idmessage.length);
+      // console.log(targetUser);
+      // console.log(this.state.idmessage.length);
       for(i=0;i<this.state.idmessage.length;i++){
         if((this.props.username == this.state.idmessage[i].username1 || this.props.username == this.state.idmessage[i].username2 )&&(targetUser ==this.state.idmessage[i].username1 || targetUser==this.state.idmessage[i].username2))
         {
             id=i
             check=true;
-            console.log(check);
+            // console.log(check);
 
         }
       }
@@ -105,25 +112,48 @@ export default class LISTUSER extends Component{
       }
     })
   }
+  _renderItem=({item})=>{
+    return(
+      <TouchableHighlight key={item.id} onPress={this._handlepress.bind(this,item.username)}>
+            <View style={styles.viewuser}>
+                    <Image source={{uri:item.imgsrc}}
+                    style={styles.avatar}
+                    />
+                        <Text style={styles.username}>{item.fullname}</Text>
+            </View>
+      </TouchableHighlight>
+    )
+  }
   render(){
-    const USER=this.state.alluser.map((user,i)=>{
-      return(
-        <TouchableHighlight key={i} onPress={this._handlepress.bind(this,user.username)}>
-              <View style={styles.viewuser}>
-                      <Image source={{uri:user.imgsrc}}
-                      style={styles.avatar}
-                      />
-                          <Text style={styles.username}>{user.fullname}</Text>
-              </View>
-        </TouchableHighlight>
-      )
-    })
+    if(this.state.renderPlaceholderOnly==true) return(
+      <View style={{flex:1,backgroundColor:'white'}}>
+
+      </View>
+    )
+    //
+    // const USER=this.state.alluser.map((user,i)=>{
+    //   return(
+    //     <TouchableHighlight key={i} onPress={this._handlepress.bind(this,user.username)}>
+    //           <View style={styles.viewuser}>
+    //                   <Image source={{uri:user.imgsrc}}
+    //                   style={styles.avatar}
+    //                   />
+    //                       <Text style={styles.username}>{user.fullname}</Text>
+    //           </View>
+    //     </TouchableHighlight>
+    //   )
+    // })
     return(
       <Image style={styles.background}
       source={require('./back.jpg')} >
-            <ScrollView style={styles.listuser}>
+            {/* <ScrollView style={styles.listuser}>
             {USER}
-            </ScrollView>
+            </ScrollView> */}
+            <FlatList
+              data={this.state.alluser}
+              renderItem={this._renderItem}
+              keyExtractor={item=>item.id}
+            />
       <View style={styles.navbar}>
             <TouchableHighlight   onPress={this._pressuser.bind(this)} >
                   <View style={styles.home}>

@@ -6,7 +6,8 @@ import { View,
   StyleSheet,
   Image,
   Dimensions,
-  TextInput
+  TextInput,
+  InteractionManager
 
 
  } from 'react-native';
@@ -25,10 +26,14 @@ export default class Profile extends Component {
       ],
       youraccount:[
 
-      ]
+      ],
+      renderPlaceholderOnly:true
     }
   }
   componentDidMount(){
+    InteractionManager.runAfterInteractions(() => {
+      this.setState({renderPlaceholderOnly: false});
+    });
     firebase.database().ref('username/').on('value',(snapshot)=>{
       const currentaccount=snapshot.val();
       console.log(currentaccount);
@@ -60,6 +65,11 @@ export default class Profile extends Component {
 
     }
   render(){
+    if(this.state.renderPlaceholderOnly==true) return(
+      <View style={{flex:1,backgroundColor:'white'}}>
+
+      </View>
+    )
     var i;
     for(i=0;i<this.state.allaccount.length;i++){
       if(this.props.username==this.state.allaccount[i].username)
@@ -70,8 +80,7 @@ export default class Profile extends Component {
     console.log(acc);
     return(
       <Image style={styles.background}
-      source={require('./back.jpg')}
-          >
+      source={require('./back.jpg')}>
               <View style={styles.topprofile}>
                   <View style={styles.header}>
                       <TouchableHighlight onPress={this._onPress.bind(this)}>
